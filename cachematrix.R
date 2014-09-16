@@ -18,8 +18,12 @@ makeCacheMatrix <- function(x = matrix()) {
 		x <<- new_mat
 	}
 	get <- function() x
+	
+	# set & get inverse functions
 	setinverse <- function(solve) inv_mat <<- solve
 	getinverse <- function() inv_mat
+	
+	# store for functions
 	list(set = set, get = get, setinverse = setinverse, getinverse = getinverse)
 }
 
@@ -27,14 +31,27 @@ makeCacheMatrix <- function(x = matrix()) {
 ## Write a short comment describing this function
 
 cacheSolve <- function(x, ...) {
+
         ## Return a matrix that is the inverse of 'x'
+        
+        # get inverse of matrix
         inv <- x$getinverse()
+        
+        # check if inverse is NULL, if not, return inverse
         if(!is.null(inv)){
         	message("... get chached data ...")
         	return(inv)
         }
+        
+        # inverse is currently null, so get matrix data 
         data <- x$get()
+        
+        # and start solve function
         inv <- solve(data, ...)
-        x$setmean(inv)
+        
+        # update store
+        x$setinverse(inv)
+        
+        #return inversed matrix
         inv
 }
